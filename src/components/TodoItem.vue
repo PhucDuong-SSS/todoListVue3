@@ -1,15 +1,30 @@
 <template>
-  <p :class="['todo-item', todoProps.isComplete ?'isCompleted':'']">  <input type="checkbox" :checked="todoProps.isComplete"/>
+  <p :class="['todo-item', todoProps.isComplete ?'isCompleted':'']">  <input type="checkbox" :checked="todoProps.isComplete" v-on:change="markCompleted"/>
     {{todoProps.title}}
-    <button class="del-btn">Delete</button>
+    <button class="del-btn" @click="deleteTodo">Delete</button>
     </p>
 </template>
 
 <script>
 export default {
     name: 'TodoItem',
-    props: ['todoProps']
+    props: ['todoProps'],
+    setup(props, content){
+    const markCompleted = ()=>{
+        content.emit('item-complete', props.todoProps.id)
+    };
+    const deleteTodo = ()=>{
+        content.emit('item-delete', props.todoProps.id)
+    }
+    return {
+    markCompleted ,
+    deleteTodo
+
+    }
+
 }
+}
+
 </script>
 
 <style>
